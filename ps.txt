@@ -1,0 +1,4 @@
+# Problem
+
+We have a database. And we want to answer questions using data available in this database.
+In our case, the database is a movies database.

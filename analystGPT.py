@@ -1,6 +1,17 @@
 import pandas as pd
 import sqlite3
-import openai
+from openai import OpenAI
+from dotenv import load_dotenv
+import os
+
+# Load environment variables
+load_dotenv()
+
+# Create an OpenAI client using API key and optionally, the base URL
+client = OpenAI(
+    api_key= os.environ.get("OPENAI_API_KEY"),
+    base_url=os.environ.get("OPENAI_BASE_URL"),
+)
 
 # Helper function to generate table schema and sample data
 def generate_table_info(table, cursor):
@@ -54,22 +65,33 @@ As a senior analyst, given the above schemas and data, write a detailed and corr
     
 "{question}"
 
-For your query, only use columns actualy available in the table (refer to schema for the same). Also, only apply those filters that are absolutely required.
+For your query, only use columns actualy available in the table (refer to schema for the same). 
+Also, only apply those filters that are absolutely required.
+Return only the query and nothing else. If you respond with nothing but the query, I'll tip you $1000.
     
-Comment only the query and nothing else.
-"""
+Output format:
+Return your query and nothing else.
 
-#print(query)
+Q: Which is the highest grossing movie?
+A: 
+SELECT original_title
+FROM movies
+WHERE revenue = (SELECT MAX(revenue) FROM movies);
+
+Q: 
+
+
+"""
 
 messageHistory = [
     {"role": "user", "content": query}
 ]
 
-response = openai.ChatCompletion.create(
+response = client.chat.completions.create(
   model="gpt-3.5-turbo",
   messages = messageHistory,
   temperature=0.0,
-  max_tokens=500
+  max_tokens=500,
 )
 
 messageHistory.append(response.choices[0].message)
@@ -105,11 +127,11 @@ while True:
 
         messageHistory.append({"role": "user", "content": feedback + "\nComment only the query and nothing else."})
 
-        response = openai.ChatCompletion.create(
+        response = client.chat.completions.create(
             model="gpt-3.5-turbo",
             messages = messageHistory,
             temperature=0.0,
-            max_tokens=1000
+            max_tokens=1000,
         )
 
         messageHistory.append(response.choices[0].message)

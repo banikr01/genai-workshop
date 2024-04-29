@@ -24,7 +24,7 @@ I have thought of a celebrity and your task is to guess who the celebrity is. Yo
 If you get it right, you stand a chance to win a thousand dollars.
 
 Here are a few rules
-- The celebrity I'm thinking of can be a Bollywood star or a cricket player
+- The celebrity I'm thinking of can be a Hollywood movie star or a singer
 - You can only ask me yes or no questions. Alternatively, you can ask me a multiple choice question where I choose an option.
 - Assume I'm always telling the truth.
 - Assume if you get the answer right, I will tell you so. 
